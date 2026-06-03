@@ -59,14 +59,28 @@ function App() {
 
           <h3>{weatherData.current.temp_c}°C</h3>
           <p>Feels like: {weatherData.current.feelslike_c}°C</p>
-          <p>Condition: {weatherData.current.condition_text}</p>
+          <p>Condition: {weatherData.current.conditionText}</p>
           <p>Humidity: {weatherData.current.humidity}%</p>
           <p>Wind: {weatherData.current.wind_kph} kph</p>
 
           <img
-            src={weatherData.current.condition_icon}
-            alt={weatherData.current.condition_text}
+            src={weatherData.current.conditionIcon}
+            alt={weatherData.current.conditionText}
           />
+              <h2>10-Day Forecast</h2>
+          <div>
+            {weatherData.forecast.map((day) => (
+              <article key={day.date}>
+                <h3>{day.date}</h3>
+                <img src={day.conditionIcon} alt={day.conditionText} />
+                <p>{day.conditionText}</p>
+                <p>Max: {day.maxTempC}°C</p>
+                <p>Min: {day.minTempC}°C</p>
+                <p>Avg: {day.avgTempC}°C</p>
+                <p>Rain chance: {day.chanceOfRain}%</p>
+              </article>
+            ))}
+          </div>
         </section>
       )}
     </main>
