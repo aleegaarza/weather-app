@@ -10,10 +10,12 @@ function App() {
     event.preventDefault();
     if (!city.trim()) {
     setError('Please enter a city.');
+    setWeatherData(null);
       return;
     }
     try {
-    setError("");
+    setError(null);
+    setWeatherData(null);
     setLoading(true);
     const response = await fetch(`http://localhost:3001/api/weather?city=${encodeURIComponent(city)}`);
     const data = await response.json();
@@ -45,11 +47,28 @@ function App() {
         />
         <button type="submit">Search</button>
       </form>
-      <div>
-        {weatherData && <pre>{JSON.stringify(weatherData, null, 2)}</pre>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {loading && <p>Loading...</p>}
-      </div>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {loading && <p>Loading weather data...</p>}
+      {weatherData && !loading && !error && (
+        <section>
+          <h2>
+            {weatherData.location.name}, {weatherData.location.region}
+          </h2>
+          <p>{weatherData.location.country}</p>
+          <p>Local time: {weatherData.location.localtime}</p>
+
+          <h3>{weatherData.current.temp_c}°C</h3>
+          <p>Feels like: {weatherData.current.feelslike_c}°C</p>
+          <p>Condition: {weatherData.current.condition_text}</p>
+          <p>Humidity: {weatherData.current.humidity}%</p>
+          <p>Wind: {weatherData.current.wind_kph} kph</p>
+
+          <img
+            src={weatherData.current.condition_icon}
+            alt={weatherData.current.condition_text}
+          />
+        </section>
+      )}
     </main>
   );
 }
