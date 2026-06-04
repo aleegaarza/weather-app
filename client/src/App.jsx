@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import WeatherCard from './components/WeatherCard';
 
 function App() {
   const [city, setCity] = useState('');
@@ -51,6 +52,7 @@ function App() {
       {loading && <p>Loading weather data...</p>}
       {weatherData && !loading && !error && (
         <section>
+          <section>
           <h2>
             {weatherData.location.name}, {weatherData.location.region}
           </h2>
@@ -67,20 +69,15 @@ function App() {
             src={weatherData.current.conditionIcon}
             alt={weatherData.current.conditionText}
           />
+          </section>
+          <section>
               <h2>10-Day Forecast</h2>
           <div>
             {weatherData.forecast.map((day) => (
-              <article key={day.date}>
-                <h3>{day.date}</h3>
-                <img src={day.conditionIcon} alt={day.conditionText} />
-                <p>{day.conditionText}</p>
-                <p>Max: {day.maxTempC}°C</p>
-                <p>Min: {day.minTempC}°C</p>
-                <p>Avg: {day.avgTempC}°C</p>
-                <p>Rain chance: {day.chanceOfRain}%</p>
-              </article>
+              <WeatherCard key={day.date} day={day} />
             ))}
           </div>
+          </section>
         </section>
       )}
     </main>
